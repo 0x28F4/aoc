@@ -35,3 +35,12 @@ func (p Point) MulScal(s int) Point {
 		p.Y * s,
 	}
 }
+
+type DirFn func(s Point) Point
+
+var (
+	UP    DirFn = func(s Point) Point { return Point{X: s.X, Y: s.Y - 1} }
+	DOWN  DirFn = func(s Point) Point { return Point{X: s.X, Y: s.Y + 1} }
+	LEFT  DirFn = func(s Point) Point { return Point{X: s.X - 1, Y: s.Y} }
+	RIGHT DirFn = func(s Point) Point { return Point{X: s.X + 1, Y: s.Y} }
+)

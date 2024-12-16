@@ -16,12 +16,12 @@ func New(lines []string) Container {
 	return Container{lines}
 }
 
-func NewPadded(lines []string) Container {
-	tb := strings.Repeat("#", len(lines[0])+2)
+func NewPadded(lines []string, padd string) Container {
+	tb := strings.Repeat(padd, len(lines[0])+2)
 
 	ret := []string{tb}
 	for _, line := range lines {
-		ret = append(ret, fmt.Sprintf("#%s#", line))
+		ret = append(ret, fmt.Sprintf("%s%s%s", padd, line, padd))
 	}
 
 	ret = append(ret, tb)
@@ -52,6 +52,16 @@ func (c Container) At(p point.Point) (string, error) {
 		return "", ErrOutOfBounds
 	}
 	return c.Lines[y][x : x+1], nil
+}
+
+func (c Container) Points() []point.Point {
+	var points []point.Point
+	for y := range c.Lines {
+		for x := range len(c.Lines[0]) {
+			points = append(points, point.Point{X: x, Y: y})
+		}
+	}
+	return points
 }
 
 func (c Container) Set(p point.Point, r string) error {
