@@ -29,6 +29,32 @@ func (p Point) Sub(other Point) Point {
 	return p.Add(other.Neg())
 }
 
+func (p Point) Mul(other Point) Point {
+	return Point{
+		p.X * other.X,
+		p.Y * other.Y,
+	}
+}
+
+func (p Point) Div(other Point) Point {
+	return Point{
+		p.X / other.X,
+		p.Y / other.Y,
+	}
+}
+
+func (p Point) Mod(mod Point) Point {
+	x := p.X % mod.X
+	y := p.Y % mod.Y
+	if x < 0 {
+		x += mod.X
+	}
+	if y < 0 {
+		y += mod.Y
+	}
+	return Point{x, y}
+}
+
 func (p Point) MulScal(s int) Point {
 	return Point{
 		p.X * s,

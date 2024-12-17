@@ -3,6 +3,7 @@ package container
 import (
 	"errors"
 	"fmt"
+	"regexp"
 	"strings"
 
 	"github.com/0x28F4/aoc2024/utils/point"
@@ -91,4 +92,14 @@ func (c Container) Copy() Container {
 	return Container{
 		Lines: nl,
 	}
+}
+
+func (c Container) Re(r *regexp.Regexp) bool {
+	for _, line := range c.Lines {
+		if r.MatchString(line) {
+			return true
+		}
+	}
+
+	return false
 }
