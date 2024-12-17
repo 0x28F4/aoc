@@ -37,6 +37,12 @@ func MustNil(v any) {
 	}
 }
 
+func MustNotNil(v any) {
+	if v == nil {
+		panic("value is nil")
+	}
+}
+
 func MustFalse(v bool) {
 	if v {
 		panic("got true")

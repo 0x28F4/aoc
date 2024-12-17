@@ -35,3 +35,10 @@ func (s Set[T]) Items() []T {
 	}
 	return items
 }
+
+func (s Set[T]) First() T {
+	for item := range s {
+		return item
+	}
+	panic("called First on set with size 0")
+}
