@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"cmp"
 	"fmt"
 	"strconv"
 )
@@ -49,6 +50,30 @@ func MustFalse(v bool) {
 	}
 }
 
+func MustSmaller[T cmp.Ordered](actual T, other T) {
+	if actual >= other {
+		panic(fmt.Sprintf("actual %d is greater or equal than other %d", actual, other))
+	}
+}
+
+func MustGreater[T cmp.Ordered](actual T, other T) {
+	if actual <= other {
+		panic(fmt.Sprintf("actual %d is smaller or equal than other %d", actual, other))
+	}
+}
+
+func MustSmallerEq[T cmp.Ordered](actual T, other T) {
+	if actual > other {
+		panic(fmt.Sprintf("actual %d is greater than other %d", actual, other))
+	}
+}
+
+func MustGreaterEq[T cmp.Ordered](actual T, other T) {
+	if actual < other {
+		panic(fmt.Sprintf("actual %d is smaller than other %d", actual, other))
+	}
+}
+
 func MustTrue(v bool) {
 	if !v {
 		panic("got false")
@@ -79,4 +104,13 @@ func Abs(i int) int {
 		return -i
 	}
 	return i
+}
+
+func StringPopLeft(s string) (item string, newS string) {
+	if len(s) == 0 {
+		return
+	}
+	item = s[0:1]
+	newS = s[1:]
+	return
 }
