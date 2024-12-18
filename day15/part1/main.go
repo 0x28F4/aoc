@@ -34,7 +34,7 @@ type box struct {
 	tx  tx
 }
 
-func (b *box) push(dir string, isRobot bool) point.Point {
+func (b *box) push(dir string) point.Point {
 	if len(dir) != 1 {
 		panic("length of dir is not equal to 1")
 	}
@@ -100,7 +100,7 @@ func (s *simulation) update() (done bool) {
 	}
 
 	rollback := false
-	cur := s.robot.push(dir, true)
+	cur := s.robot.push(dir)
 	for {
 		if s.walls.Contains(cur) {
 			rollback = true
@@ -110,7 +110,7 @@ func (s *simulation) update() (done bool) {
 		foundBox := false
 		for _, box := range s.boxes {
 			if box.pos == cur {
-				cur = box.push(dir, false)
+				cur = box.push(dir)
 				foundBox = true
 
 			}
@@ -146,6 +146,7 @@ func solve() {
 	sim := parseMap()
 	for !sim.update() {
 	}
+	sim.print()
 	fmt.Println("part 1", sim.score())
 }
 

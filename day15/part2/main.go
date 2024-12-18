@@ -157,6 +157,7 @@ func solve() {
 	sim := parseMap()
 	for !sim.update() {
 	}
+	sim.print()
 	fmt.Println("part 2", sim.score())
 }
 
