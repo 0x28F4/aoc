@@ -195,3 +195,10 @@ func Min[T cmp.Ordered](s []T) (best T) {
 	}
 	return best
 }
+
+func ReverseString(s string) (result string) {
+	for _, v := range s {
+		result = string(v) + result
+	}
+	return
+}

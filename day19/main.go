@@ -15,37 +15,40 @@ var inputFile = flag.String("input", "example", "select input file")
 func main() {
 	flag.Parse()
 	handleInput()
-	// fmt.Println(literals, designs)
-
 	solution := 0
-	for i, des := range designs {
-		fmt.Printf("%d/%d\n", i, len(designs))
-		// fmt.Println(des, Parse(des))
-		if Parse(des) {
+	for _, des := range designs {
+		if Parse(des) > 0 {
 			solution++
 		}
 	}
-
 	fmt.Println("part 1", solution)
+
+	solution = 0
+	for _, des := range designs {
+		solution += Parse(des)
+	}
+	fmt.Println("part 2", solution)
 }
 
-func Parse(design string) bool {
-	var _parse func(rem string) bool
+var cache map[string]int = make(map[string]int)
 
-	_parse = func(rem string) bool {
-		if rem == "" {
-			return true
+func Parse(design string) int {
+	cache[""] = 1
+
+	var _parse func(rem string) int
+	_parse = func(rem string) (ret int) {
+		if num, hit := cache[rem]; hit {
+			return num
 		}
 
 		for _, lit := range literals {
 			if strings.HasPrefix(rem, lit) {
-				if _parse(rem[len(lit):]) {
-					return true
-				}
+				ret += _parse(rem[len(lit):])
 			}
 		}
 
-		return false
+		cache[rem] = ret
+		return ret
 	}
 
 	return _parse(design)
