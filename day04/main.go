@@ -36,7 +36,7 @@ func handleInput() []string {
 }
 
 func solve() {
-	con := c.NewPadded(handleInput())
+	con := c.NewPadded(handleInput(), "#")
 
 	points := []point.Point{{X: 0, Y: 0}}
 	cur := point.Point{X: 0, Y: 0}
@@ -121,7 +121,7 @@ func solveB() {
 
 	input := string(bytes)
 	lines := strings.Split(input, "\n")
-	con := c.NewPadded(lines)
+	con := c.NewPadded(lines, "#")
 	con.Print()
 
 	score := 0
