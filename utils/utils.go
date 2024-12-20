@@ -32,6 +32,36 @@ func MustEq(a, b any) {
 	}
 }
 
+func MustNotEq(a, b any) {
+	if a == b {
+		panic(fmt.Sprintf("got equal values, but they shouldnt be %v", a))
+	}
+}
+
+func IsSliceEq[T comparable](a, b []T) bool {
+	if len(a) != len(b) {
+		return false
+	}
+	for i := range b {
+		if b[i] != a[i] {
+			return false
+		}
+	}
+
+	return true
+}
+
+func MustSliceEq[T comparable](a []T, b []T) {
+	if len(a) != len(b) {
+		panic(fmt.Sprintf("lengths of slices don't match: len(a)=%d, len(b)=%d\na=%v\nb=%v", len(a), len(b), a, b))
+	}
+	for i := range b {
+		if b[i] != a[i] {
+			panic(fmt.Sprintf("values of slices don't match, %v =/= %v at %d", b[i], a[i], i))
+		}
+	}
+}
+
 func MustNil(v any) {
 	if v != nil {
 		panic(fmt.Sprintf("not nil: %v", v))
@@ -113,4 +143,55 @@ func StringPopLeft(s string) (item string, newS string) {
 	item = s[0:1]
 	newS = s[1:]
 	return
+}
+
+func Pow(x, p int) int {
+	MustGreaterEq(p, 0)
+	ret := 1
+	for range p {
+		ret *= x
+	}
+	return ret
+}
+
+var Inf = int(^uint(0) >> 1)
+
+func Distance(a []int, b []int) int {
+	if len(a) != len(b) {
+		return Inf
+	}
+
+	dist := 0
+	for i := range a {
+		dist += Abs(a[i] - b[i])
+	}
+
+	return dist
+}
+
+func DistanceBinary(a []int, b []int) int {
+	dist := 0
+	for i := range max(len(a), len(b)) {
+		if i >= len(b) || i >= len(a) {
+			dist++
+			continue
+		}
+
+		if a[i] != b[i] {
+			dist++
+		}
+	}
+
+	return dist
+}
+
+func Min[T cmp.Ordered](s []T) (best T) {
+	MustGreater(len(s), 0)
+	best = s[0]
+	for _, v := range s[1:] {
+		if v < best {
+			best = v
+		}
+	}
+	return best
 }
