@@ -1,10 +1,25 @@
 package point
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/0x28F4/aoc2024/utils"
+)
 
 type Point struct {
 	X int
 	Y int
+}
+
+func FromSlice(s []int) Point {
+	utils.MustLen(s, 2)
+
+	return Point{s[0], s[1]}
+}
+
+func FromStringSlice(s []string) Point {
+	utils.MustLen(s, 2)
+	return Point{utils.MustInt(s[0]), utils.MustInt(s[1])}
 }
 
 func (p Point) String() string {
