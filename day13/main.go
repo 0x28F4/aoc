@@ -19,19 +19,19 @@ func main() {
 	handleInput()
 
 	solution := 0
-	alt := 0
 	for _, ma := range machines {
-		n, m := ma.solve()
-		cost := m + 3*n
-		if cost != ma.solveWithMath() {
-			fmt.Println(cost, ma.solveWithMath())
-		}
-
-		alt += ma.solveWithMath()
-		solution += cost
+		solution += ma.solve()
 	}
 
-	fmt.Println("part 1", solution, alt)
+	fmt.Println("part 1", solution)
+
+	solution = 0
+	for _, ma := range machines {
+		ma.price = ma.price.Add(point.Point{X: 10000000000000, Y: 10000000000000})
+		solution += ma.solve()
+	}
+
+	fmt.Println("part 2", solution)
 }
 
 type machine struct {
@@ -40,23 +40,7 @@ type machine struct {
 	price   point.Point
 }
 
-func (ma machine) solve() (int, int) {
-	divA := ma.price.Div(ma.aButton)
-	divB := ma.price.Div(ma.bButton)
-
-	for n := range max(divA.X, divA.Y) + 1 {
-		for m := range max(divB.X, divB.Y) + 1 {
-			if ma.price == ma.aButton.MulScal(n).Add(ma.bButton.MulScal(m)) {
-				return n, m
-			}
-		}
-	}
-	return 0, 0
-}
-
-func (ma machine) solveWithMath() int {
-	// num :=
-
+func (ma machine) solve() int {
 	B := ma.aButton
 	A := ma.bButton
 	P := ma.price
@@ -77,6 +61,10 @@ func (ma machine) solveWithMath() int {
 			return c
 		}
 		if mDen == 0 {
+			return 0
+		}
+
+		if (P.X-A.X*c)%(B.X-3*A.X) != 0 {
 			return 0
 		}
 
@@ -130,22 +118,3 @@ func handleInput() {
 		})
 	}
 }
-
-// Ax * n + Bx * m = Px
-// Ay * n + By * m = Py
-// n + 3m = cost
-
-// Ax * (cost - 3m) + Bx * m = Px
-// Ay * (cost - 3m) + By * m = Py
-
-// Ax * cost - 3Ax m + Bx m = Px
-// Ay * cost - 3Ay m + By m = Py
-
-// Px - Ax * cost = (Bx - 3Ax) m
-// Py - Ay * cost = (By - 3Ay) m
-
-// (Px - Ax * cost) / (Bx - 3Ax) = m
-// (Py - Ay * cost) / (By - 3Ay) = m
-
-// (Px - Ax * cost) / (Bx - 3Ax) = (Py - Ay * cost) / (By - 3Ay)
-//
